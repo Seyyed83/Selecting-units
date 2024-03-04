@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class University {
-    ArrayList<Student> totalStudents=new ArrayList<>();
-    ArrayList<College> colleges=new ArrayList<>();
+    public static Map<Integer,Student> totalStudents=new HashMap<>();
+    public static ArrayList<College> colleges=new ArrayList<>();
 }
