@@ -1,8 +1,9 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class College {
     String name;
-    ArrayList<Course> courses=new ArrayList<>();
+    List<Course> courses=new ArrayList<>();
     public College(String name){
         this.name=name;
         University.colleges.add(this);

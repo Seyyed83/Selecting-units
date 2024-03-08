@@ -8,32 +8,26 @@ public class CLI {
         if (course == null) {
             return "";
         }
-        String str = course.code + "  " + course.name;
+        StringBuilder str = new StringBuilder(course.code + "  " + course.name);
         if (course.name.length() <= 25) {
-            for (int i = 0; i < 25 - course.name.length(); i++) {
-                str += " ";
-            }
+            str.append(" ".repeat(25 - course.name.length()));
         }
-        str = str + "  " + course.teacherName;
+        str.append("  ").append(course.teacherName);
         if (course.teacherName.length() <= 25) {
-            for (int i = 0; i < 25 - course.teacherName.length(); i++) {
-                str += " ";
-            }
+            str.append(" ".repeat(25 - course.teacherName.length()));
         }
-        str = str + "   " + course.fullCapacity + "/" + course.capacity;
+        str.append("   ").append(course.fullCapacity).append("/").append(course.capacity);
         if ((course.fullCapacity + "/" + course.capacity).length() <= 7) {
-            for (int i = 0; i < 7 - (course.fullCapacity + "/" + course.capacity).length(); i++) {
-                str += " ";
-            }
+            str.append(" ".repeat(Math.max(0, 7 - (course.fullCapacity + "/" + course.capacity).length())));
         }
-        str = str + "     " + course.time + "     " + course.midTest + "      " + course.finalTest + "          " + course.unit + "       ";
+        str.append("     ").append(course.time).append("     ").append(course.midTest).append("      ").append(course.finalTest).append("          ").append(course.unit).append("       ");
         if (course instanceof SpecialLesson) {
-            str += "Special";
+            str.append("Special");
         }
         if (course instanceof PublicLesson) {
-            str += "Public";
+            str.append("Public");
         }
-        return str;
+        return str.toString();
     }
 
     private void exitORenter(String str) {
@@ -58,15 +52,18 @@ public class CLI {
         switch (input) {
             case ("1"):
                 System.out.println("Please tell me your username : ");
+                System.out.println();
                 studentUsername();
             case ("2"):
+                System.out.println("Please tell me your username : ");
+                System.out.println();
                 //TODO
             case ("3"):
                 //TODO
             case ("ex"):
                 System.exit(0);
             default:
-                if (input != "en") {
+                if (!input.equals("en")) {
                     System.out.println("unExpected enter ");
                 }
                 Enter();
@@ -76,18 +73,19 @@ public class CLI {
     private void studentUsername() {
         try {
             String str = scanner.next();
-            Integer user = 0;
+            int user = 0;
             for (int i = 0; i < str.length(); i++) {
                 if (str.charAt(i) > 47 && str.charAt(i) < 58) {
                     user += str.charAt(i) - 48;
                     user *= 10;
                 } else {
-                    "d".charAt(6);
+                    throw new RuntimeException();
                 }
             }
             user /= 10;
             if (Student.username2student.containsKey(user)) {
                 System.out.println("Please tell me your password : ");
+                System.out.println();
                 studentPassword(user);
             } else {
                 System.out.println("There is no Student by this username");
@@ -101,6 +99,7 @@ public class CLI {
                 switch (input) {
                     case ("1"):
                         System.out.println("Please tell me your username : ");
+                        System.out.println();
                         studentUsername();
                     case ("en"):
                         Enter();
@@ -131,7 +130,7 @@ public class CLI {
                     pass += str.charAt(i) - 48;
                     pass *= 10;
                 } else {
-                    "d".charAt(6);
+                    throw new RuntimeException();
                 }
             }
             pass /= 10;
@@ -142,7 +141,7 @@ public class CLI {
                 System.out.println("    Wrong password !!!          ");
                 System.out.println("    Please choose one of these  ");
                 System.out.println("1-  Try again for password :    ");
-                System.out.println("2-  Go back                     ");
+                System.out.println("b-  Go back                     ");
                 System.out.println("en- Go Enter page               ");
                 System.out.println("ex- Exit                        ");
                 System.out.println();
@@ -151,9 +150,11 @@ public class CLI {
                 switch (input) {
                     case ("1"):
                         System.out.println("Please tell me your password : ");
+                        System.out.println();
                         studentPassword(user);
-                    case ("2"):
+                    case ("b"):
                         System.out.println("Please tell me your username : ");
+                        System.out.println();
                         studentUsername();
                     case ("en"):
                         Enter();
@@ -186,17 +187,17 @@ public class CLI {
         exitORenter(input);
         switch (input) {
             case ("1"):
-                System.out.println("    Which one do you want ?     ");
                 System.out.println("Code#Course name         #       Teacher name         #   FullyCap/Cap   #      Time       #         MidTest       #        FinalTest       #   Unit   #  S or P   ");
                 for (Course cou : Student.username2student.get(user).studentCourses) {
                     System.out.println(Specification(cou));
                 }
-                if (Student.username2student.get(user).studentCourses.isEmpty()){
+                if (Student.username2student.get(user).studentCourses.isEmpty()) {
                     System.out.println("Your list is Empty");
                 }
                 System.out.println();
-                System.out.println("d-  Delete course page          ");
-                System.out.println("b-  Go back                     ");
+                System.out.println("    Which one do you want ?     ");
+                System.out.println("d - Delete course page          ");
+                System.out.println("b - Go back                     ");
                 System.out.println("en- Go Enter page               ");
                 System.out.println("ex- Exit                        ");
                 System.out.println();
@@ -214,7 +215,7 @@ public class CLI {
                     case ("ex"):
                         System.exit(0);
                     default:
-                        System.out.println("unExpected choice for     " + input);
+                        System.out.println("unExpected choice for     " + input1);
                         System.out.println("Let's go to Register page ");
                         System.out.println();
                         Register(user);
@@ -223,6 +224,7 @@ public class CLI {
                 Presentation(user);
             case ("3"):
                 System.out.println("Please tell me your username : ");
+                System.out.println();
                 studentUsername();
             case ("en"):
                 Enter();
@@ -243,7 +245,7 @@ public class CLI {
         for (int i = 0; i < University.colleges.size(); i++) {
             System.out.println(i + "-  " + University.colleges.get(i));
         }
-        System.out.println("b-  Go back       ");
+        System.out.println("b - Go back       ");
         System.out.println("en- Go Enter page ");
         System.out.println("ex- Exit          ");
         System.out.println();
@@ -259,7 +261,7 @@ public class CLI {
             case ("ex"):
                 System.exit(0);
             default:
-                Integer input3 = 0;
+                int input3 = 0;
                 for (int j = 0; j < input2.length(); j++) {
                     if (!(input2.charAt(j) > 47 && input2.charAt(j) < 58)) {
                         System.out.println("UnExpected answer  ");
@@ -273,17 +275,28 @@ public class CLI {
                     }
                 }
                 input3 /= 10;
-                SelectUnit(user, input3);
+                if (input3 < University.colleges.size()) {
+                    SelectUnit(user, input3);
+                } else {
+                    System.out.println("No college by this code");
+                    System.out.println();
+                    Presentation(user);
+                }
         }
     }
 
     private void SelectUnit(Integer user, Integer intCollege) {
         System.out.println("Your unitTotalCapacity : " + Student.username2student.get(user).unitTotalCapacity + "    Your unitPublicCapacity : " + Student.username2student.get(user).unitPublicCapacity);
         System.out.println("Choose your Course : ");
+        Course.totalCourses.clear();
         for (int k = 0; k < University.colleges.get(intCollege).courses.size(); k++) {
-            System.out.println(k + "-  " + University.colleges.get(intCollege).courses.get(k));
+            System.out.println(University.colleges.get(intCollege).courses.get(k));
+            Course.totalCourses.put(University.colleges.get(intCollege).courses.get(k).code, k);
         }
-        System.out.println("b-  Go back       ");
+        if (University.colleges.isEmpty()) {
+            System.out.println("College list is Empty");
+        }
+        System.out.println("b - Go back       ");
         System.out.println("en- Go Enter page ");
         System.out.println("ex- Exit          ");
         System.out.println();
@@ -299,7 +312,7 @@ public class CLI {
             case ("ex"):
                 System.exit(0);
             default:
-                Integer input2 = 0;
+                int input2 = 0;
                 for (int j = 0; j < input1.length(); j++) {
                     if (!(input1.charAt(j) > 47 && input1.charAt(j) < 58)) {
                         System.out.println("UnExpected answer  ");
@@ -313,12 +326,23 @@ public class CLI {
                     }
                 }
                 input2 /= 10;
-                Permission(user, intCollege, input2);
+                if (Course.totalCourses.containsKey(input2)) {
+                    Permission(user, intCollege, Course.totalCourses.get(input2));
+                } else {
+                    System.out.println("No course by this code");
+                    System.out.println();
+                    SelectUnit(user, intCollege);
+                }
         }
     }
 
     private void Permission(Integer user, Integer intCollege, Integer intCourse) {
         boolean nextPermission = true;
+        if (University.colleges.get(intCollege).courses.get(intCourse).fullCapacity >= University.colleges.get(intCollege).courses.get(intCourse).capacity) {
+            System.out.println();
+            System.out.println("No capacity");
+            System.out.println();
+        }
         if (Student.username2student.get(user).unitTotalCapacity + University.colleges.get(intCollege).courses.get(intCourse).unit > 20) {
             System.out.println();
             System.out.println("You can't select more than 20 units");
@@ -341,28 +365,28 @@ public class CLI {
                 nextPermission = false;
                 break;
             }
-            if (!Interference(cou, University.colleges.get(intCollege).courses.get(intCourse), user)) {
+            if (!Interference(University.colleges.get(intCollege).courses.get(intCourse),cou)) {
                 nextPermission = false;
                 break;
             }
         }
-        if (nextPermission){
-            AddStudent(user,intCollege,intCourse);
-        }else {
+        if (nextPermission) {
+            AddStudent(user, intCollege, intCourse);
+        } else {
             SelectUnit(user, intCollege);
         }
     }
 
-    private boolean Interference(Course course1, Course course2, Integer user) {
-        if (!(course1.timeFrom < course2.timeUntil && course1.timeFrom > course2.timeFrom || course1.timeUntil < course2.timeUntil && course1.timeUntil > course2.timeFrom) || !(course1.timeDay.substring(0, 3).equals(course2.timeDay.substring(0, 3)) || course1.timeDay.substring(4).equals(course2.timeDay.substring(4)))) {
+    private boolean Interference(Course course1, Course course2) {
+        if ((course1.timeFrom < course2.timeUntil && course1.timeFrom > course2.timeFrom || course1.timeUntil < course2.timeUntil && course1.timeUntil > course2.timeFrom) || !(course1.timeDay.substring(0, 3).equals(course2.timeDay.substring(0, 3)) || course1.timeDay.substring(4).equals(course2.timeDay.substring(4)))) {
             System.out.println("Interference in class time by : " + course2.name);
             return false;
         }
-        if (!(course1.midFrom < course2.midUntil && course1.midFrom > course2.midFrom || course1.midUntil < course2.midUntil && course1.midUntil > course2.midFrom) || !(course1.midDate == course2.midDate)) {
+        if ((course1.midFrom < course2.midUntil && course1.midFrom > course2.midFrom || course1.midUntil < course2.midUntil && course1.midUntil > course2.midFrom) || !(course1.midDate == course2.midDate)) {
             System.out.println("Interference in midTest by : " + course2.name);
             return false;
         }
-        if (!(course1.finalFrom < course2.finalUntil && course1.finalFrom > course2.finalFrom || course1.finalUntil < course2.finalUntil && course1.finalUntil > course2.finalFrom) || !(course1.finalDate == course2.finalDate)) {
+        if ((course1.finalFrom < course2.finalUntil && course1.finalFrom > course2.finalFrom || course1.finalUntil < course2.finalUntil && course1.finalUntil > course2.finalFrom) || !(course1.finalDate == course2.finalDate)) {
             System.out.println("Interference in finalTest by : " + course2.name);
             return false;
         }
@@ -377,7 +401,7 @@ public class CLI {
         University.colleges.get(intCollege).courses.get(intCourse).students.add(Student.username2student.get(user));
         Student.username2student.get(user).studentCourses.add(University.colleges.get(intCollege).courses.get(intCourse));
         System.out.println("Adding done successfully now What do you want now : ");
-        System.out.println("b-  Go back       ");
+        System.out.println("b - Go back       ");
         System.out.println("en- Go Enter page ");
         System.out.println("ex- Exit          ");
         System.out.println();
@@ -385,7 +409,7 @@ public class CLI {
         exitORenter(input);
         switch (input) {
             case ("b"):
-                SelectUnit(user,intCollege);
+                SelectUnit(user, intCollege);
             case ("en"):
                 Enter();
                 return;
@@ -393,28 +417,32 @@ public class CLI {
                 System.exit(0);
             default:
                 System.out.println("unExpected choice for " + input);
-                System.out.println("So let's try again : ");
+                System.out.println("So let's go SelectUnit page : ");
                 System.out.println();
                 SelectUnit(user, intCollege);
         }
     }
-    private void DeleteCourse(Integer user){
-        System.out.println("    Which one do you want to delete ?");
+
+    private void DeleteCourse(Integer user) {
+        System.out.println("    Which one do you want to delete (Enter their code)?");
         System.out.println("Code#Course name         #       Teacher name         #   FullyCap/Cap   #      Time       #         MidTest       #        FinalTest       #   Unit   #  S or P   ");
+        Course.totalCourses.clear();
         for (int i = 0; i < Student.username2student.get(user).studentCourses.size(); i++) {
-            System.out.println(i + "-  " + Student.username2student.get(user).studentCourses.get(i));
+            System.out.println(Student.username2student.get(user).studentCourses.get(i));
+            Course.totalCourses.put(Student.username2student.get(user).studentCourses.get(i).code, i);
         }
-        if (Student.username2student.get(user).studentCourses.isEmpty()){
+        if (Student.username2student.get(user).studentCourses.isEmpty()) {
             System.out.println("Your list is Empty");
         }
         System.out.println();
-        System.out.println("b-  Go back to Register page    ");
+        System.out.println("b -  Go back to Register page   ");
         System.out.println("en- Go Enter page               ");
         System.out.println("ex- Exit                        ");
         System.out.println();
-        String input1=scanner.next();
+        String input1 = scanner.next();
         exitORenter(input1);
-        in:switch (input1){
+        in:
+        switch (input1) {
             case ("b"):
                 Register(user);
             case ("en"):
@@ -423,13 +451,13 @@ public class CLI {
             case ("ex"):
                 System.exit(0);
             default:
-                Integer input2=0;
-                for (int j = 0; j < input.length(); j++) {
+                int input2 = 0;
+                for (int j = 0; j < input1.length(); j++) {
                     if (!(input1.charAt(j) > 47 && input1.charAt(j) < 58)) {
                         System.out.println("UnExpected answer  ");
                         System.out.println("Please try again : ");
                         System.out.println();
-                        Register(user);
+                        DeleteCourse(user);
                         break in;
                     } else {
                         input2 += input1.charAt(j) - 48;
@@ -437,35 +465,42 @@ public class CLI {
                     }
                 }
                 input2 /= 10;
-                Course a=Student.username2student.get(user).studentCourses.get(input2);
-                Student.username2student.get(user).unitTotalCapacity-=a.unit;
-                if (a instanceof PublicLesson){
-                    Student.username2student.get(user).unitPublicCapacity-=a.unit;
-                }
-                a.students.remove(Student.username2student.get(user));
-                Student.username2student.get(user).studentCourses.remove(a);
-                System.out.println("Deleting done successfully now What do you want now : ");
-                System.out.println("b-  Go Deleting page");
-                System.out.println("en- Go Enter page   ");
-                System.out.println("ex- Exit            ");
-                System.out.println();
-                input = scanner.next();
-                exitORenter(input);
-                switch (input) {
-                    case ("b"):
-                        DeleteCourse(user);
-                    case ("en"):
-                        Enter();
-                        return;
-                    case ("ex"):
-                        System.exit(0);
-                    default:
-                        System.out.println("unExpected choice for " + input);
-                        System.out.println("So let's try again : ");
-                        System.out.println();
-                        DeleteCourse(user);
+                if (Course.totalCourses.get(input2) < Student.username2student.get(user).studentCourses.size()) {
+                    Course a = Student.username2student.get(user).studentCourses.get(Course.totalCourses.get(input2));
+                    Student.username2student.get(user).unitTotalCapacity -= a.unit;
+                    if (a instanceof PublicLesson) {
+                        Student.username2student.get(user).unitPublicCapacity -= a.unit;
+                    }
+                    a.students.remove(Student.username2student.get(user));
+                    Student.username2student.get(user).studentCourses.remove(a);
+                    System.out.println("Deleting done successfully now What do you want now : ");
+                    System.out.println("b-  Go Deleting page");
+                    System.out.println("en- Go Enter page   ");
+                    System.out.println("ex- Exit            ");
+                    System.out.println();
+                    input = scanner.next();
+                    exitORenter(input);
+                    switch (input) {
+                        case ("b"):
+                            DeleteCourse(user);
+                        case ("en"):
+                            Enter();
+                            return;
+                        case ("ex"):
+                            System.exit(0);
+                        default:
+                            System.out.println("unExpected choice for     " + input);
+                            System.out.println("So let's go Deleting page again : ");
+                            System.out.println();
+                            DeleteCourse(user);
+                    }
+                } else {
+                    System.out.println("No course has this code");
+                    System.out.println();
+                    DeleteCourse(user);
                 }
         }
     }
     //First session done
+
 }

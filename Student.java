@@ -16,4 +16,20 @@ public class Student {
         username2student.put(userName, this);
         University.totalStudents.put(userName,this);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj==null){
+            return false;
+        }
+        if (!(obj instanceof Student)){
+            return false;
+        }
+        return userName.equals(((Student) obj).userName);
+    }
+
+    @Override
+    public String toString(){
+        return name;
+    }
 }

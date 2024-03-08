@@ -1,22 +1,29 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public abstract class Course {
-    ArrayList<Student> students=new ArrayList<>();
-    static Scanner scanner = new Scanner(System.in);
-    private boolean constructor = true;
-    int code, capacity, fullCapacity, unit,group;
+    public static HashMap<Integer, Integer> totalCourses = new HashMap<>();
+    ArrayList<Student> students = new ArrayList<>();
+    Scanner scanner = new Scanner(System.in);
+    int code, capacity, fullCapacity, unit;
     String name, teacherName, time, midTest, finalTest;
     double timeFrom, timeUntil, midFrom, midUntil, finalFrom, finalUntil, midDate, finalDate;
     String timeDay;
     College college;
 
     public Course(int code, int capacity, int fullCapacity, int unit, String name, String teacherName, String time, String midTest, String finalTest, College college) {
+        boolean constructor = true;
         while (constructor) {
             constructor = false;
             try {
+                for (int i=0;i<time.length();i++){
+                    if (time.charAt(i)==' '){
+                        throw new RuntimeException();
+                    }
+                }
                 if (time.length() != 19) {
-                    char alaki = time.charAt(20);
+                    throw new RuntimeException();
                 }
                 if (!(time.charAt(0) > 47 && time.charAt(0) < 51) || !(time.charAt(1) > 47 && time.charAt(1) < 58) || time.charAt(2) != '.' || !(time.charAt(3) > 47 && time.charAt(3) < 54) || !(time.charAt(4) > 47 && time.charAt(4) < 58)) {
                     System.out.println("From what time !!! (time)");
@@ -62,16 +69,15 @@ public abstract class Course {
                         continue;
                     }
                 }
-                if (!(time.substring(12, 15).equals("Son") || time.substring(12, 15).equals("Mon") || time.substring(12, 15).equals("Tue") || time.substring(12, 15).equals("Wen") || time.substring(12, 15).equals("Thu") || time.substring(12, 15).equals("Fri") || time.substring(12, 15).equals("Sat"))) {
+                if (!(time.startsWith("Son", 12) || time.startsWith("Mon", 12) || time.startsWith("Tue", 12) || time.startsWith("Wen", 12) || time.startsWith("Thu", 12) || time.startsWith("Fri", 12) || time.startsWith("Sat", 12))) {
                     System.out.println("What day ??? (time)");
                     System.out.println("Please try again:");
                     time = scanner.next();
                     constructor = true;
-                    if (!(time.substring(16, 19).equals("Son") || time.substring(16, 19).equals("Mon") || time.substring(16, 19).equals("Tue") || time.substring(16, 19).equals("Wen") || time.substring(16, 19).equals("Thu") || time.substring(16, 19).equals("Fri") || time.substring(16, 19).equals("Sat") || time.substring(16, 19).equals("---"))) {
+                    if (!(time.startsWith("Son", 16) || time.startsWith("Mon", 16) || time.startsWith("Tue", 16) || time.startsWith("Wen", 16) || time.startsWith("Thu", 16) || time.startsWith("Fri", 16) || time.startsWith("Sat", 16) || time.startsWith("---", 16))) {
                         System.out.println("What day ??? (time)");
                         System.out.println("Please try again:");
                         time = scanner.next();
-                        constructor = true;
                         continue;
                     }
                     continue;
@@ -83,12 +89,18 @@ public abstract class Course {
                 System.out.println("Please try again : ");
                 time = scanner.next();
                 constructor = true;
+                continue;
             }
             try {
-                if (midTest.length() != 17) {
-                    char alaki = midTest.charAt(20);
+                for (int i=0;i<midTest.length();i++){
+                    if (midTest.charAt(i)==' '){
+                        throw new RuntimeException();
+                    }
                 }
-                if (midTest.equals("---") && !midTest.equals("---")) {
+                if (midTest.length() != 17&&!midTest.equals("---")) {
+                    throw new RuntimeException();
+                }
+                if (midTest.equals("---")) {
                     midDate = 0;
                     midFrom = 0;
                     midUntil = 0;
@@ -172,10 +184,16 @@ public abstract class Course {
                 System.out.println("Please try again:");
                 midTest = scanner.next();
                 constructor = true;
+                continue;
             }
             try {
+                for (int i=0;i<finalTest.length();i++){
+                    if (finalTest.charAt(i)==' '){
+                        throw new RuntimeException();
+                    }
+                }
                 if (finalTest.length() != 17 && !finalTest.equals("---")) {
-                    char alaki = finalTest.charAt(20);
+                    throw new RuntimeException();
                 }
                 if (finalTest.equals("---")) {
                     finalDate = 0;
@@ -263,7 +281,6 @@ public abstract class Course {
                 }
             }
         }
-        constructor = true;
         this.code = code;
         this.capacity = capacity;
         this.fullCapacity = fullCapacity;
@@ -274,31 +291,32 @@ public abstract class Course {
         this.midTest = midTest;
         this.finalTest = finalTest;
         college.courses.add(this);
-        if (midTest .equals("---")) {
+        if (midTest.equals("---")) {
             this.midTest += "              ";
         }
         if (finalTest.equals("---")) {
             this.finalTest += "              ";
         }
-        this.college=college;
+        this.college = college;
     }
+
     @Override
     public boolean equals(Object obj) {
-        if (obj==null){
+        if (obj == null) {
             return false;
         }
-        if (!(obj instanceof Course)){
+        if (!(obj instanceof Course)) {
             return false;
         }
-        if (((Course) obj).code==code&& ((Course) obj).name.equals(name)&& ((Course) obj).teacherName.equals(teacherName)){
+        if (((Course) obj).code == code && ((Course) obj).name.equals(name) && ((Course) obj).teacherName.equals(teacherName)) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     @Override
     public String toString() {
-        return name;
+        return code + " " + name;
     }
 }
