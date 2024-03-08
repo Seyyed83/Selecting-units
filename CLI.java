@@ -673,7 +673,7 @@ public class CLI {
         exitORenter(input);
         switch (input) {
             case ("a"):
-                // AddCourse(intCollege);
+                AddCourse(intCollege);
             case ("b"):
                 RegisterAdmin();
             case ("en"):
@@ -713,9 +713,9 @@ public class CLI {
                         System.out.println("Let's go to Register Page");
                         RegisterAdmin();
                     } else if (isCap) {
-                        // ChangeCapacity(intCollege, a);
+                        ChangeCapacity(intCollege, a);
                     } else {
-                        // CourseInfo(intCollege, a);
+                        CourseInfo(intCollege, a);
                     }
                 } else {
                     System.out.println("No course has this code");
@@ -723,6 +723,255 @@ public class CLI {
                     System.out.println();
                     CoursesPage(intCollege);
                 }
+        }
+    }
+    private void AddCourse(Integer intCollege) {
+        System.out.println("Enter variable that requested");
+        System.out.println("CourseName : ");
+        String name = scanner.next();
+        System.out.println("TeacherName : ");
+        String teacher = scanner.next();
+        System.out.println("Time (example 11.59-13.30#Sat#Thu) : ");
+        String time = scanner.next();
+        System.out.println("MidTest (example 09.00-12.00_05.31 or also ---(if you don't want to have midTest)) : ");
+        String mid = scanner.next();
+        System.out.println("FinalTest (example 09.00-12.00_04.31 or also ---(if you don't want to have finalTest)) : ");
+        String Final = scanner.next();
+        GetInts(name, teacher, time, mid, Final, intCollege);
+    }
+
+    private void GetInts(String name, String teacherName, String time, String mid, String Final, Integer intCollege) {
+        System.out.println("Code : ");
+        String codeS = scanner.next();
+        System.out.println("Capacity : ");
+        String capacityS = scanner.next();
+        System.out.println("Unit : ");
+        String unitS = scanner.next();
+        int code = 0, capacity = 0, unit = 0;
+        for (int i = 0; i < codeS.length(); i++) {
+            if (codeS.charAt(i) > 47 && codeS.charAt(i) < 58) {
+                code += codeS.charAt(i) - 48;
+                code *= 10;
+            } else {
+                System.out.println("unExpected");
+                System.out.println();
+                GetInts(name, teacherName, time, mid, Final, intCollege);
+            }
+        }
+        code /= 10;
+        for (int i = 0; i < capacityS.length(); i++) {
+            if (capacityS.charAt(i) > 47 && capacityS.charAt(i) < 58) {
+                capacity += capacityS.charAt(i) - 48;
+                capacity *= 10;
+            } else {
+                System.out.println("unExpected");
+                System.out.println();
+                GetInts(name, teacherName, time, mid, Final, intCollege);
+            }
+        }
+        for (College col : University.colleges) {
+            for (Course cou : col.courses) {
+                if (code == cou.code) {
+                    System.out.println("Repeated Code !!! ".concat("From College ").concat(col.name).concat(" Course ").concat(cou.name));
+                    System.out.println();
+                    GetInts(name, teacherName, time, mid, Final, intCollege);
+                }
+            }
+        }
+        capacity /= 10;
+        for (int i = 0; i < unitS.length(); i++) {
+            if (unitS.charAt(i) > 47 && unitS.charAt(i) < 58) {
+                unit += unitS.charAt(i) - 48;
+                unit *= 10;
+            } else {
+                System.out.println("unExpected");
+                System.out.println();
+                GetInts(name, teacherName, time, mid, Final, intCollege);
+            }
+        }
+        unit /= 10;
+        System.out.println("Is it Public course ? (0 - No / 1 - Yes)");
+        System.out.println("b-  Go back to Course page ");
+        System.out.println("en- Go Enter page          ");
+        System.out.println("ex- Exit                   ");
+        System.out.println();
+        String isPublic = scanner.next();
+        exitORenter(isPublic);
+        switch (isPublic) {
+            case ("0"):
+                SpecialLesson NewS = new SpecialLesson(code, capacity, 0, unit, name, teacherName, time, mid, Final, University.colleges.get(intCollege));
+                CoursesPage(intCollege);
+                break;
+            case ("1"):
+                PublicLesson NewP = new PublicLesson(code, capacity, 0, unit, name, teacherName, time, mid, Final, University.colleges.get(intCollege));
+                CoursesPage(intCollege);
+                break;
+            case ("b"):
+                CoursesPage(intCollege);
+                break;
+            case ("en"):
+                Enter();
+                return;
+            case ("ex"):
+                System.exit(0);
+            default:
+                System.out.println("Unexpected input   ");
+                System.out.println("Please try again : ");
+                GetInts(name, teacherName, time, mid, Final, intCollege);
+        }
+    }
+
+    private void ChangeCapacity(Integer intCollege, Integer intCourse) {
+        System.out.println("Fully/Total     " + University.colleges.get(intCollege).courses.get(intCourse).fullCapacity + "/" + University.colleges.get(intCollege).courses.get(intCourse).capacity);
+        System.out.println("b-  Go back to Course page          ");
+        System.out.println("en- Go Enter page                   ");
+        System.out.println("ex- Exit                            ");
+        System.out.println("    Or Enter yor desired Capacity : ");
+        System.out.println();
+        input = scanner.next();
+        exitORenter(input);
+        switch (input) {
+            case ("b"):
+                CoursesPage(intCollege);
+                break;
+            case ("en"):
+                Enter();
+                return;
+            case ("ex"):
+                System.exit(0);
+            default:
+                int a = 0;
+                for (int i = 0; i < input.length(); i++) {
+                    if (input.charAt(i) > 47 && input.charAt(i) < 58) {
+                        a += input.charAt(i) - 48;
+                        a *= 10;
+                    } else {
+                        System.out.println("unExpected input check it " + input);
+                        System.out.println();
+                        ChangeCapacity(intCollege, intCourse);
+                    }
+                }
+                a /= 10;
+                if (a <= University.colleges.get(intCollege).courses.get(intCourse).fullCapacity) {
+                    int b=University.colleges.get(intCollege).courses.get(intCourse).capacity;
+                    University.colleges.get(intCollege).courses.get(intCourse).fullCapacity=a;
+                    University.colleges.get(intCollege).courses.get(intCourse).capacity = a;
+                    for (int j=a;j<b;j++){
+                        University.colleges.get(intCollege).courses.get(intCourse).students.remove(j);
+                    }
+                    CoursesPage(intCourse);
+                } else {
+                    University.colleges.get(intCollege).courses.get(intCourse).capacity=a;
+                    CoursesPage(intCollege);
+                }
+
+        }
+    }
+
+    private void CourseInfo(Integer intCollege, Integer intCourse) {
+        System.out.println("     Choose Student to Remove from this course : ");
+        for (Student student:University.colleges.get(intCollege).courses.get(intCourse).students){
+            System.out.println(student.userName+" : "+student.name.concat(" -   (Password) -> ")+student.password);
+        }
+        if (University.colleges.get(intCollege).courses.get(intCourse).students.isEmpty()) {
+            System.out.println("     No student get this course");
+        }
+        System.out.println("     Send another Username to add in this course ");
+        System.out.println("A  - Send A to see all students                  ");
+        System.out.println("b  - Go back to Course page                      ");
+        System.out.println("en - Go Enter page                               ");
+        System.out.println("ex - Exit                                        ");
+        System.out.println();
+        input = scanner.next();
+        exitORenter(input);
+        switch (input) {
+            case ("A"):
+                ShowStudent(intCollege, intCourse);
+            case ("b"):
+                CoursesPage(intCollege);
+                return;
+            case ("en"):
+                Enter();
+                return;
+            case ("ex"):
+                System.exit(0);
+            default:
+                int a = 0;
+                for (int i = 0; i < input.length(); i++) {
+                    if (input.charAt(i) > 47 && input.charAt(i) < 58) {
+                        a += input.charAt(i) - 48;
+                        a *= 10;
+                    } else {
+                        System.out.println("unExpected input   ");
+                        System.out.println("Please try again : ");
+                        System.out.println();
+                        CourseInfo(intCollege, intCourse);
+                    }
+                }
+                a /= 10;
+                boolean trueInput = false;
+                if (University.totalStudents.containsKey(a)) {
+                    Course ab = University.colleges.get(intCollege).courses.get(intCourse);
+                    Student stu = University.totalStudents.get(a);
+                    if (University.colleges.get(intCollege).courses.get(intCourse).students.contains(University.totalStudents.get(a))) {
+                        stu.unitTotalCapacity -= ab.unit;
+                        if (ab instanceof PublicLesson) {
+                            stu.unitPublicCapacity -= ab.unit;
+                        }
+                        ab.fullCapacity--;
+                        ab.students.remove(stu);
+                        stu.studentCourses.remove(ab);
+                        trueInput = true;
+                        System.out.println("Student remove Successfully");
+                        System.out.println();
+                        CourseInfo(intCollege, intCourse);
+                    } else {
+                        stu.unitTotalCapacity += ab.unit;
+                        if (ab instanceof PublicLesson) {
+                            stu.unitPublicCapacity += ab.unit;
+                        }
+                        ab.fullCapacity++;
+                        ab.students.add(stu);
+                        stu.studentCourses.add(ab);
+                        System.out.println("Student adding Successfully");
+                        System.out.println();
+                        CourseInfo(intCollege, intCourse);
+                    }
+                }
+                if (!trueInput) {
+                    System.out.println("unExpected input   ");
+                    System.out.println("Please try again : ");
+                    System.out.println();
+                    CourseInfo(intCollege, intCourse);
+                }
+        }
+    }
+
+    private void ShowStudent(Integer intCollege, Integer intCourse) {
+        for (Student student : University.totalStudents.values()) {
+            System.out.println(student + " : " + student.userName + " -   (Password)->" + student.password);
+        }
+        System.out.println("     Now what do you want  ");
+        System.out.println("b  - Go back to CourseInfo ");
+        System.out.println("en - Go Enter page         ");
+        System.out.println("ex - Exit                  ");
+        System.out.println();
+        input = scanner.next();
+        exitORenter(input);
+        switch (input) {
+            case ("b"):
+                CourseInfo(intCollege, intCourse);
+                return;
+            case ("en"):
+                Enter();
+                return;
+            case ("ex"):
+                System.exit(0);
+            default:
+                System.out.println("unExpected input ");
+                System.out.println("Let's go back    ");
+                System.out.println();
+                CourseInfo(intCollege, intCourse);
         }
     }
 }
