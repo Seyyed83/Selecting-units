@@ -57,7 +57,7 @@ public class CLI {
             case ("2"):
                 System.out.println("Please tell me your username : ");
                 System.out.println();
-                //TODO
+                //AdminUsername();
             case ("3"):
                 //TODO
             case ("ex"):
@@ -289,8 +289,9 @@ public class CLI {
         System.out.println("Your unitTotalCapacity : " + Student.username2student.get(user).unitTotalCapacity + "    Your unitPublicCapacity : " + Student.username2student.get(user).unitPublicCapacity);
         System.out.println("Choose your Course : ");
         Course.totalCourses.clear();
+        System.out.println("Code#Course name         #       Teacher name         #   FullyCap/Cap   #      Time       #         MidTest       #        FinalTest       #   Unit   #  S or P   ");
         for (int k = 0; k < University.colleges.get(intCollege).courses.size(); k++) {
-            System.out.println(University.colleges.get(intCollege).courses.get(k));
+            System.out.println(Specification(University.colleges.get(intCollege).courses.get(k)));
             Course.totalCourses.put(University.colleges.get(intCollege).courses.get(k).code, k);
         }
         if (University.colleges.isEmpty()) {
@@ -342,6 +343,7 @@ public class CLI {
             System.out.println();
             System.out.println("No capacity");
             System.out.println();
+            nextPermission = false;
         }
         if (Student.username2student.get(user).unitTotalCapacity + University.colleges.get(intCollege).courses.get(intCourse).unit > 20) {
             System.out.println();
@@ -358,14 +360,14 @@ public class CLI {
             }
         }
         for (Course cou : Student.username2student.get(user).studentCourses) {
-            if (cou.equals(University.colleges.get(intCollege).courses.get(intCourse))) {
+            if ((cou.name).equals(University.colleges.get(intCollege).courses.get(intCourse).name)) {
                 System.out.println();
                 System.out.println("You got it before");
                 System.out.println();
                 nextPermission = false;
                 break;
             }
-            if (!Interference(University.colleges.get(intCollege).courses.get(intCourse),cou)) {
+            if (Interference(University.colleges.get(intCollege).courses.get(intCourse), cou)) {
                 nextPermission = false;
                 break;
             }
@@ -378,19 +380,19 @@ public class CLI {
     }
 
     private boolean Interference(Course course1, Course course2) {
-        if ((course1.timeFrom < course2.timeUntil && course1.timeFrom > course2.timeFrom || course1.timeUntil < course2.timeUntil && course1.timeUntil > course2.timeFrom) || !(course1.timeDay.substring(0, 3).equals(course2.timeDay.substring(0, 3)) || course1.timeDay.substring(4).equals(course2.timeDay.substring(4)))) {
+        if (((course1.timeFrom < course2.timeUntil && course1.timeFrom > course2.timeFrom) || (course1.timeUntil < course2.timeUntil && course1.timeUntil > course2.timeFrom)) && ((course1.timeDay.substring(0, 3).equals(course2.timeDay.substring(0, 3))) || course1.timeDay.substring(4).equals(course2.timeDay.substring(4)) || (course1.timeDay.substring(0, 3).equals(course2.timeDay.substring(4))) || (course1.timeDay.substring(4).equals(course2.timeDay.substring(0, 3))))) {
             System.out.println("Interference in class time by : " + course2.name);
-            return false;
+            return true;
         }
-        if ((course1.midFrom < course2.midUntil && course1.midFrom > course2.midFrom || course1.midUntil < course2.midUntil && course1.midUntil > course2.midFrom) || !(course1.midDate == course2.midDate)) {
+        if (((course1.midFrom < course2.midUntil && course1.midFrom > course2.midFrom || course1.midUntil < course2.midUntil && course1.midUntil > course2.midFrom)) && (course1.midDate == course2.midDate && course1.midDate != 0)) {
             System.out.println("Interference in midTest by : " + course2.name);
-            return false;
+            return true;
         }
-        if ((course1.finalFrom < course2.finalUntil && course1.finalFrom > course2.finalFrom || course1.finalUntil < course2.finalUntil && course1.finalUntil > course2.finalFrom) || !(course1.finalDate == course2.finalDate)) {
+        if ((course1.finalFrom < course2.finalUntil && course1.finalFrom > course2.finalFrom || course1.finalUntil < course2.finalUntil && course1.finalUntil > course2.finalFrom) || (course1.finalDate == course2.finalDate && course1.finalDate != 0)) {
             System.out.println("Interference in finalTest by : " + course2.name);
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void AddStudent(Integer user, Integer intCollege, Integer intCourse) {
@@ -398,6 +400,7 @@ public class CLI {
         if (University.colleges.get(intCollege).courses.get(intCourse) instanceof PublicLesson) {
             Student.username2student.get(user).unitPublicCapacity += University.colleges.get(intCollege).courses.get(intCourse).unit;
         }
+        University.colleges.get(intCollege).courses.get(intCourse).fullCapacity++;
         University.colleges.get(intCollege).courses.get(intCourse).students.add(Student.username2student.get(user));
         Student.username2student.get(user).studentCourses.add(University.colleges.get(intCollege).courses.get(intCourse));
         System.out.println("Adding done successfully now What do you want now : ");
@@ -471,6 +474,7 @@ public class CLI {
                     if (a instanceof PublicLesson) {
                         Student.username2student.get(user).unitPublicCapacity -= a.unit;
                     }
+                    a.fullCapacity--;
                     a.students.remove(Student.username2student.get(user));
                     Student.username2student.get(user).studentCourses.remove(a);
                     System.out.println("Deleting done successfully now What do you want now : ");

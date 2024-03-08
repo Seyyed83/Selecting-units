@@ -69,13 +69,13 @@ public abstract class Course {
                         continue;
                     }
                 }
-                if (!(time.startsWith("Son", 12) || time.startsWith("Mon", 12) || time.startsWith("Tue", 12) || time.startsWith("Wen", 12) || time.startsWith("Thu", 12) || time.startsWith("Fri", 12) || time.startsWith("Sat", 12))) {
-                    System.out.println("What day ??? (time)");
+                if (!(time.startsWith("Sun", 12) || time.startsWith("Mon", 12) || time.startsWith("Tue", 12) || time.startsWith("Wen", 12) || time.startsWith("Thu", 12) || time.startsWith("Fri", 12) || time.startsWith("Sat", 12))) {
+                    System.out.println("What day ??? (time)"+name);
                     System.out.println("Please try again:");
                     time = scanner.next();
                     constructor = true;
-                    if (!(time.startsWith("Son", 16) || time.startsWith("Mon", 16) || time.startsWith("Tue", 16) || time.startsWith("Wen", 16) || time.startsWith("Thu", 16) || time.startsWith("Fri", 16) || time.startsWith("Sat", 16) || time.startsWith("---", 16))) {
-                        System.out.println("What day ??? (time)");
+                    if (!(time.startsWith("Sun", 16) || time.startsWith("Mon", 16) || time.startsWith("Tue", 16) || time.startsWith("Wen", 16) || time.startsWith("Thu", 16) || time.startsWith("Fri", 16) || time.startsWith("Sat", 16) || time.startsWith("---", 16))) {
+                        System.out.println("What day ??? (time)"+name);
                         System.out.println("Please try again:");
                         time = scanner.next();
                         continue;

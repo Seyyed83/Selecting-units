@@ -1,48 +1,30 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-//        HashMap<Integer,Integer> ala=new HashMap<>();
-//        ala.put(1,2);
-//        ala.put(2,3);
-//        System.out.println(ala.get(20));
         Scanner scanner=new Scanner(System.in);
-        Student ali=new Student(123,1234,"ali");
+        Student Ali=new Student(1,1234,"Ali");
+        Student Hossein=new Student(2,1234,"Hossein");
+        Student Mohamad=new Student(3,1234,"Mohamad");
+        Student Yassin=new Student(4,1234,"Yasin");
+        Student Sadra=new Student(5,1234,"Sadra");
+        Student Sara=new Student(6,1234,"Sara");
+        Student Reyhaneh=new Student(7,1234,"Reyhaneh");
         System.out.println("Welcome!!!");
         System.out.println();
         College math=new College("Math");
-        SpecialLesson course=new SpecialLesson(0,200,101,4,"PublicMath1","Dr.Pournaki","10.59-12.30#Sat#---","09.00-12.00_05.31","09.00-12.00/12.22",math);
-//        ali.studentCourses.add(course);
-//        System.out.println(course);
-//        System.out.println(course.timeFrom);
-//        System.out.println(course.timeUntil);
-//        System.out.println(course.timeDay);
-//        System.out.println(course.midFrom);
-//        System.out.println(course.midUntil);
-//        System.out.println(course.midDate);
-//        System.out.println(course.finalFrom);
-//        System.out.println(course.finalUntil);
-//        System.out.println(course.finalDate);
-//        Integer a=scanner.nextInt();
-//        System.out.println(a);
+        College physic=new College("Physic");
+        College computer=new College("Computer");
+        SpecialLesson math1=new SpecialLesson(100,2,0,4,"PublicMath1","Dr.Pournaki","10.59-12.30#Sat#---","09.00-12.00_05.31","09.00-12.00/12.22",math);
+        SpecialLesson math2=new SpecialLesson(101,10,0,4,"PublicMath2","Dr.Moqadasi","11.59-13.30#Thu#Sat","---","---",math);
+        PublicLesson publicMath=new PublicLesson(200,10,0,2,"PublicCourse1","Me","07.30-09.30#Sun#Mon","---","09.00-12.00/12.12",math);
+        SpecialLesson physic1=new SpecialLesson(102,10,0,3,"PublicPhysic1","DR.Baghram","11.59-13.30#Thu#Sat","---","09.00-12.00/12.12",physic);
+        SpecialLesson physic2=new SpecialLesson(103,10,0,3,"PublicPhysic2","DR.Abolhasani","13.59-15.30#Thu#Sat","09.00-12.00/12.12","09.00-12.00/11.12",physic);
+        PublicLesson publicPhysic=new PublicLesson(201,10,0,3,"PublicCourse2","Mamad","07.30-09.30#Tue#Wen","---","---",physic);
+        SpecialLesson bp=new SpecialLesson(104,10,5,3,"BP","Dr.Fazli","15.59-17.30#Sat#---","---","---",computer);
+        SpecialLesson ap=new SpecialLesson(105,10,0,3,"AP","Dr.Fazli","15.59-17.30#Sun#Wen","---","---",computer);
+        PublicLesson publicComputer=new PublicLesson(202,10,0,2,"PublicCourse3","NemiDounam","10.30-12.30#Tue#Wen","---","---",computer);
         CLI cli=new CLI();
         cli.Enter();
-//        List aaa=new ArrayList<>();
-//        aaa.add("dwffw");
-//        aaa.add("efew");
-//        aaa.add("qqqqq");
-//        aaa.add("aaaaa");
-//        aaa.add("wfafaf");
-//        aaa=aaa.subList(0,2);
-//        for (Object s:aaa){
-//            System.out.println(s);
-//        }
-//        String str="cvcer";
-//        String string=str.substring(1,3);
-//        String s=str.substring(4);
-//        System.out.println(str);
     }
 }
