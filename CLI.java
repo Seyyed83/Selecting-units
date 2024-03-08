@@ -42,10 +42,10 @@ public class CLI {
 
     public void Enter() {
         System.out.println("Please choose one of these ");
-        System.out.println("1- Log in as Student         ");
-        System.out.println("2- Log in as Admin           ");
-        System.out.println("3- Sign up or change password");
-        System.out.println("ex- Exit                     ");
+        System.out.println("1- Log in as Student       ");
+        System.out.println("2- Log in as Admin         ");
+        System.out.println("3- Sign up                 ");
+        System.out.println("ex- Exit                   ");
         System.out.println();
         input = scanner.next();
         exitORenter(input);
@@ -59,7 +59,7 @@ public class CLI {
                 System.out.println();
                 AdminUsername();
             case ("3"):
-                //TODO
+                SignUp();
             case ("ex"):
                 System.exit(0);
             default:
@@ -972,6 +972,76 @@ public class CLI {
                 System.out.println("Let's go back    ");
                 System.out.println();
                 CourseInfo(intCollege, intCourse);
+        }
+    }
+    private void SignUp(){
+        System.out.println("Please give me useName : (Should be a reasonable Number and unrepeated userName)");
+        System.out.println("en- go Enter page (Go back) ");
+        System.out.println("ex- Exit                    ");
+        System.out.println();
+        input=scanner.next();
+        exitORenter(input);
+        if (input.equals("en")){
+            return;
+        }
+        int a=0;
+        boolean isRepeated=false;
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) > 47 && input.charAt(i) < 58) {
+                a += input.charAt(i) - 48;
+                a *= 10;
+            } else {
+                System.out.println("unExpected input   ");
+                System.out.println("Please try again : ");
+                System.out.println();
+                SignUp();
+            }
+        }
+        a/=10;
+        for (Student student:University.totalStudents.values()){
+            if (student.userName==a){
+                isRepeated=true;
+            }
+        }
+        if (!isRepeated){
+            System.out.println("Your desire password (Should be a reasonable Number)");
+            System.out.println();
+            input=scanner.next();
+            int ab=0;
+            for (int i = 0; i < input.length(); i++) {
+                if (input.charAt(i) > 47 && input.charAt(i) < 58) {
+                    ab += input.charAt(i) - 48;
+                    ab *= 10;
+                } else {
+                    System.out.println("unExpected input   ");
+                    System.out.println("Please try again : ");
+                    System.out.println();
+                    SignUp();
+                }
+            }
+            ab/=10;
+            System.out.println("And name ? ");
+            System.out.println("en- go Enter page (Go back) ");
+            System.out.println("ex- Exit                    ");
+            System.out.println();
+            input = scanner.next();
+            exitORenter(input);
+            switch (input) {
+                case ("en") :
+                    Enter();
+                    return;
+                case ("ex"):
+                    System.exit(0);
+                default:
+                    Student newStudent=new Student(a,ab,input);
+                    System.out.println("You SignUp successfully "+input);
+                    System.out.println();
+                    SignUp();
+            }
+        }else {
+            System.out.println("Repeated userName");
+            System.out.println();
+            SignUp();
         }
     }
 }
