@@ -57,7 +57,7 @@ public class CLI {
             case ("2"):
                 System.out.println("Please tell me your username : ");
                 System.out.println();
-                //AdminUsername();
+                AdminUsername();
             case ("3"):
                 //TODO
             case ("ex"):
@@ -507,4 +507,222 @@ public class CLI {
     }
     //First session done
 
+    private void AdminUsername() {
+        input = scanner.next();
+        if (Admin.admin.userName.equals(input)) {
+            System.out.println("Please tell me AdminPassword : ");
+            System.out.println();
+            AdminPassword();
+        } else {
+            System.out.println("Isn't True                 ");
+            System.out.println("Please choose one of these ");
+            System.out.println("1- try again :             ");
+            System.out.println("en- go Enter page          ");
+            System.out.println("ex- Exit                   ");
+            System.out.println();
+            input = scanner.next();
+            exitORenter(input);
+            switch (input) {
+                case ("1"):
+                    System.out.println("Please tell me Admin username : ");
+                    System.out.println();
+                    AdminUsername();
+                case ("en"):
+                    Enter();
+                    return;
+                case ("ex"):
+                    System.exit(0);
+                default:
+                    System.out.println("unExpected choice      " + input);
+                    System.out.println("Please try again for username : ");
+                    System.out.println();
+                    AdminUsername();
+            }
+        }
+    }
+
+    private void AdminPassword() {
+        input = scanner.next();
+        if (Admin.admin.password.equals(input)) {
+            System.out.print("You enter successfully ");
+            System.out.println();
+            RegisterAdmin();
+        } else {
+            System.out.println("    Wrong password !!!          ");
+            System.out.println("    Please choose one of these  ");
+            System.out.println("1-  Try again for password :    ");
+            System.out.println("en- Go Enter page               ");
+            System.out.println("ex- Exit                        ");
+            System.out.println();
+            input = scanner.next();
+            exitORenter(input);
+            switch (input) {
+                case ("1"):
+                    System.out.println("Please tell me AdminPassword : ");
+                    System.out.println();
+                    AdminPassword();
+                case ("en"):
+                    Enter();
+                    return;
+                case ("ex"):
+                    System.exit(0);
+                default:
+                    System.out.println("unExpected choice for " + input);
+                    System.out.println("Please try again for password : ");
+                    System.out.println();
+                    AdminPassword();
+            }
+        }
+    }
+
+    private void RegisterAdmin() {
+        System.out.println("Choose a College for see there Info and change , Or press c to create new one : ");
+        for (int i = 0; i < University.colleges.size(); i++) {
+            System.out.println(i + "-  " + University.colleges.get(i));
+        }
+        if (University.colleges.isEmpty()) {
+            System.out.println("College list is Empty");
+        }
+        System.out.println("en- Enter page (Go back)                  ");
+        System.out.println("ex- Exit                                  ");
+        System.out.println("c - Create a new College                  ");
+        System.out.println("{-d+*+(College Number)} - Deleting College");
+        System.out.println();
+        input = scanner.next();
+        exitORenter(input);
+        switch (input) {
+            case ("en"):
+                Enter();
+                return;
+            case ("ex"):
+                System.exit(0);
+            case ("c"):
+                AddCollege();
+                RegisterAdmin();
+                return;
+            default:
+                boolean isDelete = false;
+                if (input.startsWith("-d*")) {
+                    isDelete = true;
+                    input = input.substring(3);
+                }
+                int a = 0;
+                for (int i = 0; i < input.length(); i++) {
+                    if (input.charAt(i) > 47 && input.charAt(i) < 58) {
+                        a += input.charAt(i) - 48;
+                        a *= 10;
+                    } else {
+                        System.out.println("unExpected input   ");
+                        System.out.println("Please try again : ");
+                        System.out.println();
+                        RegisterAdmin();
+                    }
+                }
+                a /= 10;
+                if (University.colleges.size() > a) {
+                    if (isDelete) {
+                        if (!University.colleges.get(a).courses.isEmpty()) {
+                            System.out.println("It shouldn't have any course ");
+                            System.out.println("Please try again :           ");
+                            System.out.println();
+                        } else {
+                            University.colleges.remove(University.colleges.get(a));
+                            System.out.println("Removed successfully");
+                        }
+                        RegisterAdmin();
+                    } else {
+                        CoursesPage(a);
+                    }
+                } else {
+                    System.out.println("Your Choose is bigger than numbers of colleges");
+                    System.out.println("Please try again : ");
+                    System.out.println();
+                    RegisterAdmin();
+                }
+        }
+    }
+
+    private void AddCollege() {
+        System.out.println();
+        System.out.println("Please enter College name : ");
+        System.out.println();
+        String inputCollege = scanner.next();
+        College newCollege = new College(inputCollege);
+    }
+
+    private void CoursesPage(Integer intCollege) {
+        System.out.println("Choose courses by their code (You can see their students)");
+        Course.totalCourses.clear();
+        System.out.println("Code#Course name         #       Teacher name         #   FullyCap/Cap   #      Time       #         MidTest       #        FinalTest       #   Unit   #  S or P   ");
+        for (int k = 0; k < University.colleges.get(intCollege).courses.size(); k++) {
+            System.out.println(Specification(University.colleges.get(intCollege).courses.get(k)));
+            Course.totalCourses.put(University.colleges.get(intCollege).courses.get(k).code, k);
+        }
+        if (University.colleges.get(intCollege).courses.isEmpty()) {
+            System.out.println("This College is Empty");
+        }
+        System.out.println();
+        System.out.println("{ - + d + * + (Course Number)} -   Deleting Course ");
+        System.out.println("{ - + cap + * + (Course Number)} - Change Capacity ");
+        System.out.println("a  -  Add Course                             ");
+        System.out.println("b  -  Go back to RegisterAdmin page          ");
+        System.out.println("en -  Go Enter page                          ");
+        System.out.println("ex -  Exit                                   ");
+        System.out.println();
+        input = scanner.next();
+        exitORenter(input);
+        switch (input) {
+            case ("a"):
+                // AddCourse(intCollege);
+            case ("b"):
+                RegisterAdmin();
+            case ("en"):
+                Enter();
+                return;
+            case ("ex"):
+                System.exit(0);
+            default:
+                boolean isDelete = false, isCap = false;
+                if (input.startsWith("-d*")) {
+                    isDelete = true;
+                    input = input.substring(3);
+                } else if (input.startsWith("-cap*")) {
+                    isCap = true;
+                    input = input.substring(5);
+                }
+                int a = 0;
+                for (int i = 0; i < input.length(); i++) {
+                    if (input.charAt(i) > 47 && input.charAt(i) < 58) {
+                        a += input.charAt(i) - 48;
+                        a *= 10;
+                    } else {
+                        System.out.println("unExpected input   ");
+                        System.out.println("Please try again : ");
+                        System.out.println();
+                        CoursesPage(intCollege);
+                        return;
+                    }
+                }
+                a /= 10;
+                if (Course.totalCourses.containsKey(a)) {
+                    a = Course.totalCourses.get(a);
+                    if (isDelete) {
+                        System.out.println(a);
+                        University.colleges.get(intCollege).courses.remove(a);
+                        System.out.println("The Course is deleted    ");
+                        System.out.println("Let's go to Register Page");
+                        RegisterAdmin();
+                    } else if (isCap) {
+                        // ChangeCapacity(intCollege, a);
+                    } else {
+                        // CourseInfo(intCollege, a);
+                    }
+                } else {
+                    System.out.println("No course has this code");
+                    System.out.println("Please try again :     ");
+                    System.out.println();
+                    CoursesPage(intCollege);
+                }
+        }
+    }
 }
